@@ -8,11 +8,13 @@ export interface TokenPayload {
 }
 
 export const generateToken = (payload: TokenPayload): string => {
-  // ! Should fixed it
-  // return jwt.sign(payload, config.JWT_SECRET, {
-  //   expiresIn: config.JWT_EXPIRES_IN,
-  // });
-  return "";
+  if (!config.JWT_SECRET) {
+    throw new Error("JWT secret is not defined in config.");
+  }
+
+  return jwt.sign(payload, config.JWT_SECRET, {
+    expiresIn: config.JWT_EXPIRES_IN || "7d",
+  });
 };
 
 export const verifyToken = (token: string): TokenPayload => {

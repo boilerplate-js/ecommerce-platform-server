@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
-import { requireRole } from "../middleware/auth";
+import { authenticate, requireRole } from "../middleware/auth";
 import { asyncHandler } from "../middleware/errorHandler";
 import { AuthenticatedRequest } from "../types";
 import { calculateOrderTotal, generateOrderNumber } from "../utils/database";
@@ -51,14 +51,13 @@ export default (prisma: PrismaClient) => {
   // Create order
   router.post(
     "/",
+    authenticate,
     asyncHandler(async (req: AuthenticatedRequest, res) => {
       const { items, shippingAddress, paymentMethod, couponCode } = req.body;
 
       if (!req.user) {
         return res.status(401).json({ success: false, error: "Unauthorized" });
       }
-
-      const g = "boilerplate";
 
       const orderNumber = generateOrderNumber();
       const { subtotal, tax, shipping, total } = calculateOrderTotal(items);

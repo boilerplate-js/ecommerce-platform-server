@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
-import { requireRole } from "../middleware/auth";
+import { authenticate, requireRole } from "../middleware/auth";
 import { asyncHandler } from "../middleware/errorHandler";
 import { AuthenticatedRequest } from "../types";
 import { slugify } from "../utils/database";
@@ -44,27 +44,67 @@ export default (prisma: PrismaClient) => {
   // Create product
   router.post(
     "/",
+    authenticate,
     requireRole(["ADMIN"]),
     asyncHandler(async (req: AuthenticatedRequest, res) => {
-      const { name, description, price, categoryId, tags, sku } = req.body;
+      const {
+        name,
+        description,
+        shortDescription,
+        price,
+        comparePrice,
+        costPrice,
+        sku,
+        barcode,
+        trackQuantity,
+        quantity,
+        allowBackorder,
+        weight,
+        dimensions,
+        images,
+        variants,
+        category,
+        tags,
+      } = req.body;
 
-      const product = await prisma.product.create({
-        data: {
-          name,
-          slug: slugify(name),
-          description,
-          price,
-          sku,
-          tags,
-          isActive: true,
-          isFeatured: false,
-          category: {
-            connect: { id: categoryId },
+      try {
+        const product = await prisma.product.create({
+          data: {
+            name,
+            description,
+            shortDescription,
+            price,
+            comparePrice,
+            costPrice,
+            sku,
+            tags,
+            barcode,
+            trackQuantity,
+            quantity,
+            allowBackorder,
+            weight,
+            dimensions,
+            slug: slugify(name),
+            images: {
+              create: images,
+            },
+            variants: {
+              create: variants,
+            },
+            category: {
+              create: category,
+            },
           },
-        },
-      });
+        });
 
-      res.status(201).json({ success: true, data: product });
+        res.status(201).json({ success: true, data: product });
+      } catch (error: any) {
+        console.error("Error: ", error?.message);
+
+        res
+          .status(400)
+          .send({ success: false, error: { message: error?.message } });
+      }
     })
   );
 

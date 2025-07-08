@@ -16,7 +16,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["./*"],
       "@/types/*": ["src/types/*"],
       "@/utils/*": ["src/utils/*"],
       "@/middleware/*": ["src/middleware/*"],

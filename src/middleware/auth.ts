@@ -1,8 +1,8 @@
-import { Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
-import { AuthenticatedRequest, ApiResponse } from '../types';
-import { AppError } from './errorHandler';
+import { PrismaClient } from "@prisma/client";
+import { NextFunction, Response } from "express";
+import jwt from "jsonwebtoken";
+import { ApiResponse, AuthenticatedRequest } from "../types";
+import { AppError } from "./errorHandler";
 
 const prisma = new PrismaClient();
 
@@ -12,14 +12,16 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      throw new AppError('Access token required', 401);
+      throw new AppError("Access token required", 401);
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      userId: string;
+    };
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: {
@@ -33,21 +35,21 @@ export const authenticate = async (
     });
 
     if (!user) {
-      throw new AppError('User not found', 401);
+      throw new AppError("User not found", 401);
     }
 
     if (!user.isActive) {
-      throw new AppError('Account is deactivated', 401);
+      throw new AppError("Account is deactivated", 401);
     }
 
     req.user = user as any;
     next();
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
-      return next(new AppError('Invalid token', 401));
+      return next(new AppError("Invalid token", 401));
     }
     if (error instanceof jwt.TokenExpiredError) {
-      return next(new AppError('Token expired', 401));
+      return next(new AppError("Token expired", 401));
     }
     next(error);
   }
@@ -56,11 +58,11 @@ export const authenticate = async (
 export const requireRole = (roles: string[]) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user) {
-      return next(new AppError('Authentication required', 401));
+      return next(new AppError("Authentication required", 401));
     }
 
     if (!roles.includes(req.user.role)) {
-      return next(new AppError('Insufficient permissions', 403));
+      return next(new AppError("Insufficient permissions", 403));
     }
 
     next();
@@ -73,11 +75,13 @@ export const optionalAuth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
-      
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+        userId: string;
+      };
+
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
         select: {
