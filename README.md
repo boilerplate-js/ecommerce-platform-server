@@ -5,6 +5,7 @@ A production-ready e-commerce platform built with TypeScript, Node.js, Prisma, P
 ## Features
 
 ### Core Features
+
 - 🔐 **Authentication & Authorization** - JWT-based auth with role-based access control
 - 👥 **User Management** - Customer and admin user accounts
 - 📦 **Product Management** - CRUD operations for products with categories, images, and variants
@@ -20,6 +21,7 @@ A production-ready e-commerce platform built with TypeScript, Node.js, Prisma, P
 - 📱 **API Documentation** - Comprehensive Swagger/OpenAPI docs
 
 ### Technical Features
+
 - ✅ **TypeScript** - Full type safety
 - 🗄️ **PostgreSQL** - Robust relational database
 - 🔧 **Prisma ORM** - Type-safe database access
@@ -33,6 +35,7 @@ A production-ready e-commerce platform built with TypeScript, Node.js, Prisma, P
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - PostgreSQL 12+
 - Redis (optional, for caching)
@@ -40,22 +43,26 @@ A production-ready e-commerce platform built with TypeScript, Node.js, Prisma, P
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd ecommerce-platform
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` with your configuration:
+
    ```env
    DATABASE_URL="postgresql://username:password@localhost:5432/ecommerce_db"
    JWT_SECRET="your-super-secret-jwt-key"
@@ -67,13 +74,14 @@ A production-ready e-commerce platform built with TypeScript, Node.js, Prisma, P
    ```
 
 4. **Set up the database**
+
    ```bash
    # Generate Prisma client
    npm run db:generate
-   
+
    # Run database migrations
    npm run db:migrate
-   
+
    # Seed the database
    npm run db:seed
    ```
@@ -89,11 +97,13 @@ API Documentation will be available at `http://localhost:3000/api-docs`
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - User login
 - `GET /api/auth/profile` - Get user profile
 
 ### Products
+
 - `GET /api/products` - Get all products
 - `GET /api/products/:id` - Get product by ID
 - `POST /api/products` - Create product (Admin)
@@ -101,6 +111,7 @@ API Documentation will be available at `http://localhost:3000/api-docs`
 - `DELETE /api/products/:id` - Delete product (Admin)
 
 ### Categories
+
 - `GET /api/categories` - Get all categories
 - `GET /api/categories/:id` - Get category by ID
 - `POST /api/categories` - Create category (Admin)
@@ -108,6 +119,7 @@ API Documentation will be available at `http://localhost:3000/api-docs`
 - `DELETE /api/categories/:id` - Delete category (Admin)
 
 ### Cart
+
 - `GET /api/cart` - Get user's cart
 - `POST /api/cart/add` - Add item to cart
 - `PUT /api/cart/:itemId` - Update cart item
@@ -115,11 +127,13 @@ API Documentation will be available at `http://localhost:3000/api-docs`
 - `DELETE /api/cart` - Clear cart
 
 ### Orders
+
 - `GET /api/orders` - Get all orders (Admin)
 - `GET /api/orders/:id` - Get order by ID
 - `POST /api/orders` - Create order
 
 ### Admin Dashboard
+
 - `GET /api/admin/dashboard` - Get dashboard statistics
 - `GET /api/admin/orders` - Get all orders with filters
 - `PUT /api/admin/orders/:id/status` - Update order status
@@ -127,11 +141,13 @@ API Documentation will be available at `http://localhost:3000/api-docs`
 - `GET /api/admin/users` - Get all users
 
 ### Payments
+
 - `POST /api/payments/create-payment-intent` - Create Stripe payment intent
 - `POST /api/payments/confirm-payment` - Confirm payment
 - `POST /api/payments/webhook` - Stripe webhook handler
 
 ### File Upload
+
 - `POST /api/upload/images` - Upload images
 - `POST /api/upload/product-images/:productId` - Upload product images
 - `DELETE /api/upload/delete-image` - Delete image
@@ -154,12 +170,14 @@ The application uses a comprehensive database schema with the following main ent
 After running the seed script, you'll have these default accounts:
 
 **Admin Account:**
+
 - Email: `admin@ecommerce.com`
-- Password: `Admin123!`
+- Password: `admin@1234`
 
 **Customer Account:**
+
 - Email: `customer@ecommerce.com`
-- Password: `Customer123!`
+- Password: `customer@1234`
 
 ## Development
 
@@ -243,6 +261,7 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions:
+
 - Open an issue on GitHub
 - Email: support@ecommerce.com
 
